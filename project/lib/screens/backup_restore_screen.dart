@@ -23,7 +23,7 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
       padding: const EdgeInsets.all(16.0),
       child: ListView(
         children: [
-          // Developer Info Card
+          // Developer Info Card (2 Developers)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: SoloTheme.systemBoxDecoration(
@@ -41,18 +41,40 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
                     letterSpacing: 1.5,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
+                
+                // Developer 1
                 Text(
-                  'DEVELOPER: ${p.developerName}',
+                  'DEVELOPER 1: ${p.developer1Name}',
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     color: SoloTheme.textBright,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
-                  'STUDENT ID: ${p.studentId}',
+                  'STUDENT ID: ${p.studentId1}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: SoloTheme.textMuted,
+                  ),
+                ),
+
+                const Divider(color: Color(0xFF1E293B), height: 20),
+
+                // Developer 2
+                Text(
+                  'DEVELOPER 2: ${p.developer2Name}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: SoloTheme.textBright,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'STUDENT ID: ${p.studentId2}',
                   style: const TextStyle(
                     fontSize: 12,
                     color: SoloTheme.textMuted,

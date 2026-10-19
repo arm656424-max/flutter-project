@@ -1,7 +1,14 @@
 class UserProfile {
   String playerName; // ชื่อผู้เล่น (แก้ไขได้)
-  final String developerName; // ชื่อผู้พัฒนา (คงที่)
-  final String studentId; // รหัสนักศึกษา (คงที่)
+  
+  // ข้อมูลผู้พัฒนาคนที่ 1
+  final String developer1Name;
+  final String studentId1;
+
+  // ข้อมูลผู้พัฒนาคนที่ 2
+  final String developer2Name;
+  final String studentId2;
+
   int level;
   int exp;
   int gold;
@@ -18,8 +25,10 @@ class UserProfile {
 
   UserProfile({
     this.playerName = 'Hunter',
-    this.developerName = 'เดชาวัต บุตรงาม',
-    this.studentId = '016830641021-3',
+    this.developer1Name = 'เดชาวัต บุตรงาม',
+    this.studentId1 = '016830641021-3',
+    this.developer2Name = 'พงศธร กล่อมจอหอ',
+    this.studentId2 = '016830641004-9',
     this.level = 1,
     this.exp = 0,
     this.gold = 100,
@@ -46,8 +55,10 @@ class UserProfile {
 
   Map<String, dynamic> toJson() => {
         'playerName': playerName,
-        'developerName': developerName,
-        'studentId': studentId,
+        'developer1Name': developer1Name,
+        'studentId1': studentId1,
+        'developer2Name': developer2Name,
+        'studentId2': studentId2,
         'level': level,
         'exp': exp,
         'gold': gold,
@@ -64,8 +75,10 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       playerName: json['playerName']?.toString() ?? json['name']?.toString() ?? 'Hunter',
-      developerName: 'เดชาวัต บุตรงาม',
-      studentId: '016830641021-3',
+      developer1Name: 'เดชาวัต บุตรงาม',
+      studentId1: '016830641021-3',
+      developer2Name: 'พงศธร กล่อมจอหอ',
+      studentId2: '016830641004-9',
       level: (json['level'] as num?)?.toInt() ?? 1,
       exp: (json['exp'] as num?)?.toInt() ?? 0,
       gold: (json['gold'] as num?)?.toInt() ?? 100,
