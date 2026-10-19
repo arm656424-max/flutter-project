@@ -63,6 +63,52 @@ class _BackupRestoreScreenState extends State<BackupRestoreScreen> {
           ),
           const SizedBox(height: 20),
 
+          // Quest Recovery Card
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: SoloTheme.systemBoxDecoration(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '[ QUEST MANAGEMENT ]',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: SoloTheme.neonCyan,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: SoloTheme.neonCyan),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    minimumSize: const Size(double.infinity, 45),
+                  ),
+                  icon: const Icon(Icons.refresh, color: SoloTheme.neonCyan, size: 18),
+                  label: const Text(
+                    'RELOAD DEFAULT QUESTS',
+                    style: TextStyle(
+                      color: SoloTheme.neonCyan,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  onPressed: () {
+                    store.resetToDefaultQuests();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('DEFAULT QUESTS RESTORED')),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
           // Export System Data Card
           Container(
             padding: const EdgeInsets.all(16),

@@ -7,7 +7,7 @@ import '../models/shop_item.dart';
 import '../models/boss.dart';
 
 class QuestStore extends ChangeNotifier {
-  static const String _storageKey = 'questlife_solo_v5';
+  static const String _storageKey = 'questlife_solo_v6';
 
   UserProfile profile = UserProfile();
   List<Quest> quests = [];
@@ -31,6 +31,43 @@ class QuestStore extends ChangeNotifier {
       Quest(id: 'q3', title: 'อ่านหนังสือ 30 นาที', description: 'เพิ่มค่าความรู้และสติปัญญา', expReward: 100, goldReward: 50, statType: 'INT', questType: QuestType.daily),
       Quest(id: 'q4', title: 'เคลียร์ภารกิจสัปดาห์', description: 'ภารกิจใหญ่ประจำสัปดาห์', expReward: 300, goldReward: 150, statType: 'STR', questType: QuestType.weekly),
     ];
+  }
+
+  // ระบบตรวจสอบวันที่ และรีเซ็ตเควสเมื่อขึ้นวัน/สัปดาห์ใหม่
+  void _checkAndResetQuests() {
+    final now = DateTime.now();
+    bool stateChanged = false;
+
+    for (var quest in quests) {
+      if (quest.isCompleted && quest.completedAt != null) {
+        if (quest.questType == QuestType.daily) {
+          // ตรวจสอบว่าวันที่ทำเสร็จ ไม่ใช่วันปัจจุบัน (คนละวัน/เดือน/ปี)
+          final comp = quest.completedAt!;
+          final isDifferentDay = now.year != comp.year || now.month != comp.month || now.day != comp.day;
+          if (isDifferentDay) {
+            quest.isCompleted = false;
+            stateChanged = true;
+          }
+        } else if (quest.questType == QuestType.weekly) {
+          // ตรวจสอบว่าทำเสร็จเกิน 7 วันแล้วหรือไม่
+          final diffDays = now.difference(quest.completedAt!).inDays;
+          if (diffDays >= 7) {
+            quest.isCompleted = false;
+            stateChanged = true;
+          }
+        }
+      }
+    }
+
+    if (stateChanged) {
+      saveData();
+    }
+  }
+
+  void resetToDefaultQuests() {
+    _initDefaultQuests();
+    saveData();
+    notifyListeners();
   }
 
   void updatePlayerName(String newName) {
@@ -169,12 +206,21 @@ class QuestStore extends ChangeNotifier {
         if (data.containsKey('boss') && data['boss'] != null) {
           boss = Boss.fromJson(Map<String, dynamic>.from(data['boss']));
         }
+
+        if (quests.isEmpty) {
+          _initDefaultQuests();
+          await saveData();
+        } else {
+          // สั่งรีเซ็ตสถานะเควสเมื่อเข้าสู่วันใหม่
+          _checkAndResetQuests();
+        }
+
         notifyListeners();
         return;
       } catch (_) {}
     }
     _initDefaultQuests();
-    saveData();
+    await saveData();
     notifyListeners();
   }
 
@@ -204,6 +250,13 @@ class QuestStore extends ChangeNotifier {
       if (data.containsKey('boss') && data['boss'] != null) {
         boss = Boss.fromJson(Map<String, dynamic>.from(data['boss']));
       }
+      
+      if (quests.isEmpty) {
+        _initDefaultQuests();
+      } else {
+        _checkAndResetQuests();
+      }
+
       saveData();
       notifyListeners();
       return true;

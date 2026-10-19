@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'data/quest_store.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+void main() async {
+  // จำเป็นสำหรับการตั้งค่า SystemChrome ก่อนรัน runApp
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // บังคับหน้าจอให้เป็นแนวตั้งเท่านั้น (Portrait Mode Only)
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => QuestStore(),
